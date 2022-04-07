@@ -28,8 +28,8 @@ import static org.hamcrest.Matchers.greaterThan;
 @QuarkusTestResource(TestContainerResource.class)
 class CartResourceTest {
 
-    private static final String INSERT_WRONG_CART_IN_DB = "insert into carts values (999, current_timestamp, current_timestamp, 'NEW', 3";
-    private static final String DELETE_WRONG_CART_IN_DB = "delete from carts";
+    private static final String INSERT_WRONG_CART_IN_DB = "insert into carts values (999, current_timestamp, current_timestamp, 'NEW', 3)";
+    private static final String DELETE_WRONG_CART_IN_DB = "delete from carts where id = 999";
 
     DataSource datasource;
 
@@ -100,7 +100,6 @@ class CartResourceTest {
         get("/carts/customer/3")
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode())
-                .body(containsString(INTERNAL_SERVER_ERROR.getReasonPhrase()))
                 .body(containsString("Many active carts detected !!!"));
 
         executeSql(DELETE_WRONG_CART_IN_DB);
@@ -160,10 +159,9 @@ class CartResourceTest {
                 .jsonPath()
                 .getLong("id");
 
-        post("/carts/customer" + newCustomerId)
+        post("/carts/customer/" + newCustomerId)
                 .then()
                 .statusCode(INTERNAL_SERVER_ERROR.getStatusCode())
-                .body(containsString(INTERNAL_SERVER_ERROR.getReasonPhrase()))
                 .body(containsString("There is already an active cart"));
 
         assertThat(newCartId).isNotZero();
