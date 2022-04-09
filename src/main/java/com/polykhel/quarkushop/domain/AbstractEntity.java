@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Column;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +13,6 @@ import java.time.Instant;
 @Getter
 @Setter
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity {
 
     @Id
@@ -22,7 +20,7 @@ public abstract class AbstractEntity {
     private Long id;
 
     @Column(name = "created_date", nullable = false)
-    private Instant createdDate;
+    private Instant createdDate = Instant.now();
 
     @Column(name = "last_modified_date")
     private Instant lastModifiedDate;
