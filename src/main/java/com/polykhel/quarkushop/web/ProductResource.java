@@ -2,7 +2,10 @@ package com.polykhel.quarkushop.web;
 
 import com.polykhel.quarkushop.dto.ProductDto;
 import com.polykhel.quarkushop.service.ProductService;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,6 +18,7 @@ import java.util.List;
 
 @Path("/products")
 @Produces("application/json")
+@Tags(value = @Tag(name = "product", description = "All the product methods"))
 public class ProductResource {
     @Inject
     ProductService productService;
@@ -36,12 +40,14 @@ public class ProductResource {
         return this.productService.findById(id);
     }
 
+    @RolesAllowed("admin")
     @POST
     @Consumes("application/json")
     public ProductDto create(ProductDto productDto) {
         return this.productService.create(productDto);
     }
 
+    @RolesAllowed("admin")
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") Long id) {

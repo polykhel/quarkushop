@@ -2,7 +2,11 @@ package com.polykhel.quarkushop.web;
 
 import com.polykhel.quarkushop.dto.ReviewDto;
 import com.polykhel.quarkushop.service.ReviewService;
+import io.quarkus.security.Authenticated;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,6 +19,7 @@ import java.util.List;
 
 @Path("/reviews")
 @Produces("application/json")
+@Tags(value = @Tag(name = "review", description = "All the review methods"))
 public class ReviewResource {
     @Inject
     ReviewService reviewService;
@@ -31,6 +36,7 @@ public class ReviewResource {
         return this.reviewService.findById(id);
     }
 
+    @Authenticated
     @POST
     @Path("/product/{id}")
     @Consumes("application/json")
@@ -38,6 +44,7 @@ public class ReviewResource {
         return this.reviewService.create(reviewDto, id);
     }
 
+    @RolesAllowed("admin")
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") Long id) {

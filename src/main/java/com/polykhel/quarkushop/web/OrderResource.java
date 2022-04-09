@@ -2,7 +2,11 @@ package com.polykhel.quarkushop.web;
 
 import com.polykhel.quarkushop.dto.OrderDto;
 import com.polykhel.quarkushop.service.OrderService;
+import io.quarkus.security.Authenticated;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -13,12 +17,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.util.List;
 
+@Authenticated
 @Path("/orders")
 @Produces("application/json")
+@Tags(value = @Tag(name = "order", description = "All the order methods"))
 public class OrderResource {
     @Inject
     OrderService orderService;
 
+    @RolesAllowed("admin")
     @GET
     public List<OrderDto> findAll() {
         return this.orderService.findAll();

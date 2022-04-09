@@ -2,6 +2,9 @@ package com.polykhel.quarkushop.web;
 
 import com.polykhel.quarkushop.dto.OrderItemDto;
 import com.polykhel.quarkushop.service.OrderItemService;
+import io.quarkus.security.Authenticated;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -13,8 +16,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.util.List;
 
+@Authenticated
 @Path("/order-items")
 @Produces("application/json")
+@Tags(value = @Tag(name = "orderItem", description = "All the orderItem methods"))
 public class OrderItemResource {
     @Inject
     OrderItemService itemService;

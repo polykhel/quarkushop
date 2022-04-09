@@ -3,7 +3,10 @@ package com.polykhel.quarkushop.web;
 import com.polykhel.quarkushop.dto.CategoryDto;
 import com.polykhel.quarkushop.dto.ProductDto;
 import com.polykhel.quarkushop.service.CategoryService;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -16,6 +19,7 @@ import java.util.List;
 
 @Path("/categories")
 @Produces("application/json")
+@Tags(value = @Tag(name = "category", description = "All the category methods"))
 public class CategoryResource {
 
     @Inject
@@ -38,12 +42,14 @@ public class CategoryResource {
         return this.categoryService.findProductsByCategoryId(id);
     }
 
+    @RolesAllowed("admin")
     @POST
     @Consumes("application/json")
     public CategoryDto create(CategoryDto categoryDto) {
         return this.categoryService.create(categoryDto);
     }
 
+    @RolesAllowed("admin")
     @DELETE
     @Path("/{id}")
     public void delete(@PathParam("id") Long id) {

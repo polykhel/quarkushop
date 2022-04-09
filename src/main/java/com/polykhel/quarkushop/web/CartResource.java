@@ -2,6 +2,9 @@ package com.polykhel.quarkushop.web;
 
 import com.polykhel.quarkushop.dto.CartDto;
 import com.polykhel.quarkushop.service.CartService;
+import io.quarkus.security.Authenticated;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.eclipse.microprofile.openapi.annotations.tags.Tags;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -14,8 +17,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+@Authenticated
 @Path("/carts")
 @Produces("application/json")
+@Tags(value = @Tag(name = "cart", description = "All the cart methods"))
 public class CartResource {
 
     @Inject
